@@ -1,4 +1,4 @@
-resource "aws_docdb_subnet_group" "default" {
+resource "aws_db_subnet_group" "default" {
   name       = "${var.env}-docdb-subnet-group"
   subnet_ids = var.subnet_ids
 
@@ -14,7 +14,7 @@ resource "aws_security_group" "rds" {
   vpc_id      = var.vpc_id
 
   ingress {
-    description      = "rds"
+    description      = "RDS"
     from_port        = 3306
     to_port          = 3306
     protocol         = "tcp"
@@ -46,8 +46,8 @@ resource "aws_rds_cluster" "rds" {
   master_password           = data.aws_ssm_parameter.DB_ADMIN_PASS.value
   db_subnet_group_name      = aws_db_subnet_group.default.name
   vpc_security_group_ids    = [aws_security_group.rds.id]
-  storage_encrypted = true
-  kms_key_id = data.aws_kms_key.key.id
+  storage_encrypted         = true
+  kms_key_id                = data.aws_kms_key.key.arn
 
   tags = merge(
     local.common_tags,
