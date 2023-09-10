@@ -30,7 +30,7 @@ resource "aws_security_group" "rds" {
 
   tags = merge(
     local.common_tags,
-    { Name = "${var.env}-rds-subnet-group" }
+    { Name = "${var.env}-rds-security-group" }
   )
 }
 
